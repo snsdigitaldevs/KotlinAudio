@@ -16,6 +16,7 @@ import androidx.media.AudioAttributesCompat.USAGE_MEDIA
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
 import androidx.media.AudioManagerCompat.AUDIOFOCUS_GAIN
+import com.doublesymmetry.kotlinaudio.encrypt.CustomDataSourceFactory
 import com.doublesymmetry.kotlinaudio.event.EventHolder
 import com.doublesymmetry.kotlinaudio.event.NotificationEventHolder
 import com.doublesymmetry.kotlinaudio.event.PlayerEventHolder
@@ -467,9 +468,6 @@ abstract class BaseAudioPlayer internal constructor(
                 raw.open(DataSpec(uri))
                 DataSource.Factory { raw }
             }
-            isUriLocalFile(uri) -> {
-                DefaultDataSourceFactory(context, userAgent)
-            }
             else -> {
                 val tempFactory = DefaultHttpDataSource.Factory().apply {
                     setUserAgent(userAgent)
@@ -479,8 +477,8 @@ abstract class BaseAudioPlayer internal constructor(
                         setDefaultRequestProperties(it.toMap())
                     }
                 }
-
-                enableCaching(tempFactory)
+                val customFactory = CustomDataSourceFactory(context, null, tempFactory)
+                enableCaching(customFactory)
             }
         }
 
