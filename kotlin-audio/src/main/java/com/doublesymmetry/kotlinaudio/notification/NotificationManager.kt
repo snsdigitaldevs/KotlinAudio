@@ -83,6 +83,7 @@ class NotificationManager internal constructor(
                     ImageRequest.Builder(context)
                         .data(artwork)
                         .headers(headers)
+                        .allowHardware(false)
                         .target { result ->
                             val resultBitmap = (result as BitmapDrawable).bitmap
                             holder?.artworkBitmap = resultBitmap
@@ -123,6 +124,7 @@ class NotificationManager internal constructor(
                         ImageRequest.Builder(context)
                             .data(value.artwork)
                             .headers(headers)
+                            .allowHardware(false)
                             .target { result ->
                                 notificationMetadataBitmap = (result as BitmapDrawable).bitmap
                                 invalidate()
